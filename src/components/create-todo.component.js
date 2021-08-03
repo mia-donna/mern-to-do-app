@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 
 export default class CreateTodo extends Component {
 
@@ -38,7 +39,7 @@ export default class CreateTodo extends Component {
       }   
 
     
-  // resetting method - still need to add submit logic for backend
+  // onsubmit event handler - resetting method - still need to add submit logic for backend
 
     onSubmit(e) {
         e.preventDefault();
@@ -49,7 +50,18 @@ export default class CreateTodo extends Component {
         console.log(`Todo Priority: ${this.state.todo_priority}`)
         console.log(`Todo Completed: ${this.state.todo_completed}`)
 
-
+        // communicate with backend - we have created a new todo object
+        const newTodo = {
+            todo_description: this.state.todo_description,
+            todo_responsible: this.state.todo_responsible,
+            todo_priority: this.state.todo_priority,
+            todo_completed: this.state.todo_completed
+        }
+        
+        // our server is running on port 400, this is the endpoint which is accepting incoming post request which contain data of new todo item
+        axios.post('http://localhost:4000/todos/add', newTodo)
+            .then(res => console.log(res.data));
+ 
         this.setState({
             todo_description: '',
             todo_responsible: '',
